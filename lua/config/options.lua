@@ -188,7 +188,7 @@ end
 vim.keymap.set("n", "<leader>fg", function()
 	vim.ui.input({ prompt = "Grep: " }, grep)
 end, { desc = "Grep in files" })
-vim.keymap.set("n", "<leader>fw", function()
+vim.keymap.set("n", "<leader>sw", function()
 	grep(vim.fn.expand("<cword>"))
 end, { desc = "Grep word under cursor" })
 vim.keymap.set("x", "<leader>fg", function()

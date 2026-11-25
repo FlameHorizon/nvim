@@ -18,6 +18,9 @@ vim.keymap.set("n", "<leader>g", function()
     vim.cmd("copen")
 end)
 
+-- Save file with Ctrl+S
+vim.keymap.set({ "n", "i", "v" }, "<C-s>", "<cmd>update<CR><Esc>", { desc = "Save file" })
+
 -- Jump backward with Alt+h (or Alt+Left)
 vim.keymap.set("n", "<M-h>", "<C-o>", { noremap = true, silent = true, desc = "Jump backward" })
 vim.keymap.set("n", "<M-Left>", "<C-o>", { noremap = true, silent = true, desc = "Jump backward" })
