@@ -199,3 +199,6 @@ end, { desc = "Grep selection" })
 -- Others
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
+
+-- Hide the ~ shown on lines past the end of the buffer
+vim.opt.fillchars:append({ eob = " " })
