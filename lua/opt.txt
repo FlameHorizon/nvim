@@ -1,0 +1,40 @@
+
+-- Auto-push :grep results directly into the Jump List
+vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+  pattern = "*grep*",
+  callback = function()
+    local qf_items = vim.fn.getqflist()
+    if #qf_items == 0 then
+      return
+    end
+
+    local win = vim.api.nvim_get_current_win()
+    local orig_buf = vim.api.nvim_get_current_buf()
+    local orig_pos = vim.api.nvim_win_get_cursor(win)
+
+    -- Record the initial position in the jump list
+    vim.cmd("normal! m'")
+
+    for _, item in ipairs(qf_items) do
+      if item.bufnr > 0 then
+        -- Load file buffer if not already in memory
+        if not vim.api.nvim_buf_is_loaded(item.bufnr) then
+          vim.fn.bufload(item.bufnr)
+        end
+
+        -- Set position and trigger a jump mark
+        vim.api.nvim_win_set_buf(win, item.bufnr)
+        local lnum = math.max(1, item.lnum)
+        local col = math.max(0, item.col - 1)
+        vim.api.nvim_win_set_cursor(win, { lnum, col })
+        vim.cmd("normal! m'")
+      end
+    end
+
+    -- Return to starting position
+    vim.api.nvim_win_set_buf(win, orig_buf)
+    vim.api.nvim_win_set_cursor(win, orig_pos)
+
+    vim.notify("Pushed " .. #qf_items .. " :grep results into the jump list!")
+  end,
+})
